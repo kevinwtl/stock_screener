@@ -2,6 +2,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import requests
 import numpy as np
+#TODO: 1) Add thousand separator into the numbers.
 
 def single_table_scraped(url, table_class):
     resp = requests.get(url)
@@ -44,30 +45,30 @@ def single_table_scraped(url, table_class):
 def all_pages_scraped(ticker, period = "annual"):
     merged_df = pd.DataFrame()
 
-    tabs = ['financial-ratios', 'profit-loss', 'cash-flow', 'balance-sheet', 'earnings-summary']
+    tabs = ['financial-ratios', 'profit-loss', 'cash-flow', 'balance-sheet', 'earnings-summary'] # 5 sub-tabs to scrape
 
     for tab in tabs:
         url = "http://www.aastocks.com/en/stocks/analysis/company-fundamental/" + tab + "?symbol=" + ticker + "&period=4" # TODO: annual vs interim
-        if tab == 'profit-loss' or tab == 'balance-sheet':
+        if tab == 'profit-loss' or tab == 'balance-sheet': # There are 2 tables on these 2 tabs
             df = single_table_scraped(url, "cnhk-cf tblM s4 s5 type2 mar15T")
             df.join(single_table_scraped(url, "cnhk-cf tblM s4 s5 mar15T"), how = 'outer')
-        else:
+        else: # Only 1 table on other tabs
             df = single_table_scraped(url, "cnhk-cf tblM s4 s5 type2 mar15T")
 
         merged_df = merged_df.join(df, how = 'outer', rsuffix=' (duplicated)')
 
-    # Turn 'Closing Date' into index & Transpose
+    # Make 'Closing Date' index & Transpose
     merged_df = merged_df.T
     merged_df.columns = merged_df.iloc[0]
     merged_df = merged_df[1:]
 
-    # Remove rows with 'duplicate'
+    # Remove rows with rsuffix: 'duplicated'
     merged_df = merged_df[~merged_df.index.str.contains('duplicated')]
 
     # Reset Index
     merged_df.reset_index(inplace = True)
 
-    # Rename rows that are called 'Others'
+    # Rename rows that are named 'Others' for clarity
     l = list(merged_df[merged_df['index'] == 'Others'].index)
     merged_df.loc[l[0]].iloc[0] = 'Others (Net Cash Flow from Return on Investments & Servicing of Finance)'
     merged_df.loc[l[1]].iloc[0] = 'Others (Net Cash Flow from Investing Activities)'
@@ -79,4 +80,4 @@ def all_pages_scraped(ticker, period = "annual"):
 
 
 
-#df = all_pages_scraped('0005')
+df = all_pages_scraped('0627')
