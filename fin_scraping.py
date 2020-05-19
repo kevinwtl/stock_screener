@@ -2,7 +2,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import requests
 import numpy as np
-#TODO: 1) Add thousand separator into the numbers.
+#TODO: 1) Add thousand separator into the numbers. 2) Turn transposing into the last action to be performed. 3) Apply to_numeric to all columns (before transposing)
 
 def single_table_scraped(url, table_class):
     resp = requests.get(url)
@@ -17,7 +17,7 @@ def single_table_scraped(url, table_class):
 
     for row in table.find_all('tr'): # scrape the table
         try:
-            items = [row.find_all('td')[col].text.strip().replace(',','') for col in range(1,6)]
+            items = [row.find_all('td')[col].text.strip().replace(',','') for col in range(1,6)] # remove thousand separator
         except:
             items = []
 
@@ -39,6 +39,7 @@ def single_table_scraped(url, table_class):
 
     df = pd.DataFrame(items_list, index = title_list).dropna().T # TODO reset index so that duplicates do not cause error
     
+    df.replace('-','0',inplace=True) #replace '-' with zero
 
     return df
 
@@ -74,10 +75,11 @@ def all_pages_scraped(ticker, period = "annual"):
     merged_df.loc[l[1]].iloc[0] = 'Others (Net Cash Flow from Investing Activities)'
     merged_df.loc[l[2]].iloc[0] = 'Others (Net Cash Flow from Financing Activities)'
 
-
+    # Make the 'index' column to become index again TODO:
+    merged_df.index = merged_df['index']
+    merged_df = merged_df.iloc[:,1:]
 
     return merged_df
 
 
-
-df = all_pages_scraped('0627')
+#df = all_pages_scraped('1810')

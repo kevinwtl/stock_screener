@@ -46,7 +46,7 @@ app.layout = html.Div([
 )
 def update_table(input_value):
     df = all_pages_scraped(input_value)
-    return generate_table(df)
+    return generate_table(df.reset_index())
 
 # Name
 @app.callback(
