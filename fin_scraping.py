@@ -52,7 +52,7 @@ def all_pages_scraped(ticker, period = "annual"):
         url = "http://www.aastocks.com/en/stocks/analysis/company-fundamental/" + tab + "?symbol=" + ticker + "&period=4" # TODO: annual vs interim
         if tab == 'profit-loss' or tab == 'balance-sheet': # There are 2 tables on these 2 tabs
             df = single_table_scraped(url, "cnhk-cf tblM s4 s5 type2 mar15T")
-            df.join(single_table_scraped(url, "cnhk-cf tblM s4 s5 mar15T"), how = 'outer')
+            df = df.join(single_table_scraped(url, "cnhk-cf tblM s4 s5 mar15T"), how = 'outer',)
         else: # Only 1 table on other tabs
             df = single_table_scraped(url, "cnhk-cf tblM s4 s5 type2 mar15T")
 
@@ -83,3 +83,5 @@ def all_pages_scraped(ticker, period = "annual"):
 
 
 #df = all_pages_scraped('1810')
+
+#df.to_csv('1810.csv')
