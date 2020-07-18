@@ -82,6 +82,6 @@ def all_pages_scraped(ticker, period = "annual"):
     return merged_df
 
 
-#df = all_pages_scraped('1810')
+#df = all_pages_scraped('2660')
+#df.to_csv('2660.csv')
 
-#df.to_csv('1810.csv')
