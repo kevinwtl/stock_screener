@@ -3,7 +3,6 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 from bs4 import BeautifulSoup
-#from value_investing.fin_scraping import *
 from fin_scraping import all_pages_scraped
 import requests
 import pandas as pd
