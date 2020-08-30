@@ -1,7 +1,11 @@
+
+import os
+os.chdir('/Users/tinglam/Documents/GitHub/value_investing')
 import pandas as pd
 from bs4 import BeautifulSoup
 import requests
 import numpy as np
+
 #TODO: 1) Add thousand separator into the numbers. 2) Turn transposing into the last action to be performed. 3) Apply to_numeric to all columns (before transposing)
 
 def single_table_scraped(url, table_class):
@@ -17,7 +21,7 @@ def single_table_scraped(url, table_class):
 
     for row in table.find_all('tr'): # scrape the table
         try:
-            items = [row.find_all('td')[col].text.strip().replace(',','') for col in range(1,6)] # remove thousand separator
+            items = [row.find_all('td')[col].text.strip().replace(',','') for col in range(1,len(row.find_all('td')))] # remove thousand separator
         except:
             items = []
 
