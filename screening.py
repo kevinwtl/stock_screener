@@ -41,9 +41,9 @@ def score_calculation(database):
 
     # Part 1: Sales performance
     ## 1a) Top Line Growth
-    df.loc['Turnover Growth (%)'] = database.loc['Turnover Growth (%)']
+    df.loc['Turnover Growth (%)'] = database.loc['Total Turnover'].astype('float').pct_change() * 100
     value = weighted_average(df.loc['Turnover Growth (%)'])
-    score = value_to_score(value,{0:0,10:1,20:1.5,30:2.5,40:3.75,50:4.5,60:5})
+    score = value_to_score(value,{-999:-3,-5:-1,0:0,10:1,20:1.5,30:2.5,40:3.75,50:4.5,60:5})
 
     df1['Reference Value'][0] = value
     df1['Score'][0] = score
@@ -65,6 +65,8 @@ def score_calculation(database):
 
     df1['Reference Value'][2] = value
     df1['Score'][2] = score
+
+
 
 
     # Part 2: Earnings Quality
@@ -93,6 +95,8 @@ def score_calculation(database):
 
     df1['Reference Value'][5] = value
     df1['Score'][5] = score
+
+
 
 
     # Part 3: Profitability

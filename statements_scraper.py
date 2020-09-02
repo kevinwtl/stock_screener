@@ -83,7 +83,7 @@ def all_pages_scraped(ticker, period = "annual"):
     merged_df.index = merged_df['index']
     merged_df = merged_df.iloc[:,1:]
 
-    return merged_df
+    return merged_df.drop(columns = ['Trend']).replace('',np.nan).dropna(axis=1)
 
 
 #df = all_pages_scraped('2660')
