@@ -2,7 +2,7 @@
 import os
 os.chdir('/Users/tinglam/Documents/GitHub/value_investing')
 import pandas as pd
-from statements_scraper import all_pages_scraped
+from statements_scraper import scrape_statements, company_name
 
 #database = pd.read_csv('2660.csv',index_col='index').dropna(axis = 1)
 pd.options.mode.chained_assignment = None 
@@ -171,11 +171,16 @@ def score_calculation(database):
     
     return df, df1
 
+
+
 ticker = ' '
 while ticker != '':
     ticker = input('Please Input the Ticker: ')
-    database = all_pages_scraped(str(ticker))
+    database = scrape_statements(str(ticker))
     df,df1 = score_calculation(database)
 
     print(df1)
-    print('Total Score: ' + str(df1['Weighted Score'].sum()))
+    print('-------')
+    print('Total Score of ' + company_name(ticker) + ': ' + str(df1['Weighted Score'].sum()))
+else:
+    exit()
