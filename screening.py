@@ -1,5 +1,5 @@
 import os
-os.chdir('/Users/tinglam/Documents/GitHub/value_investing')
+#os.chdir('/Users/tinglam/Documents/GitHub/stock_screener')
 import pandas as pd
 from statements_scraper import scrape_statements, company_name
 pd.options.mode.chained_assignment = None 
