@@ -1,6 +1,3 @@
-
-import os
-os.chdir('/Users/tinglam/Documents/GitHub/value_investing')
 import pandas as pd
 from bs4 import BeautifulSoup
 import requests
@@ -83,9 +80,16 @@ def scrape_statements(ticker , period = "annual"):
     merged_df = merged_df.iloc[:,1:]
     merged_df = merged_df.drop(columns = ['Trend']).replace('',np.nan).dropna(axis=1)
     merged_df.index.name = company_name(ticker)
+    
+    # Turn all the strings into numerics
+    merged_df = merged_df.apply(pd.to_numeric,errors='ignore',axis=1)
 
     return merged_df
 
-#df = scrape_statements('2660')
-#df.to_csv('2660.csv')
+# df = scrape_statements('2660') # Test Case
+
+
+
+
+
 
