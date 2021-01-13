@@ -1,6 +1,9 @@
 import os
 from numpy.lib import financial
-os.chdir('/Users/tinglam/Documents/GitHub/stock_screener')
+try:
+    os.chdir('/Users/tinglam/Documents/GitHub/stock_screener') # Home Mac
+except:
+    os.chdir(r'C:\Users\kwong\Documents\GitHub\stock_screener') # Actelligent PC
 import pandas as pd
 from statements_scraper import scrape_statements, company_name
 import shelve
